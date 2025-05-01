@@ -5,7 +5,7 @@ news_days <- read_csv("https://github.com/Dargel/R_AI_news/raw/refs/heads/main/A
 
 #Ч.1 Посмотрим, связано ли количество публикаций с днями недели
 
-#используем факктор, чтобы на графике дни недели шли по порядку
+#используем фактор, чтобы на графике дни недели шли по порядку
 
 
 AI_news <- news_days %>%
@@ -24,7 +24,7 @@ ggplot(data = AI_news) +
        y="Number of publications",
        title = "Publication of news on the topic of AI",
        subtitle = "Source: Comnews.ru") +
-  guides(size=FALSE, colour = 'none', fill = FALSE) +
+  guides(size="none", colour = 'none', fill = FALSE) +
   theme(plot.title = element_text(size = 18, face = "bold", vjust = 5),
         plot.subtitle = element_text(size = 10, vjust = 8),
         axis.title.x = element_text(size = 12, vjust= -2), 
@@ -63,7 +63,7 @@ ggplot(data = art_per_years, aes(x = dates, y = n, color = Years)) +
        y="Number of publications",
        title = "Publication of news on the topic of AI",
        subtitle = "Source: Comnews.ru") +
-  guides(size=FALSE, colour = FALSE, fill = FALSE) +
+  guides(size="none", colour = FALSE, fill = FALSE) +
   scale_y_continuous(limits = c(0, 10), breaks = c(2, 4, 6, 8)) +
   theme(plot.title = element_text(size = 18, face = "bold", vjust = 5),
         plot.subtitle = element_text(size = 10, vjust = 8),
@@ -72,24 +72,27 @@ ggplot(data = art_per_years, aes(x = dates, y = n, color = Years)) +
         axis.text.x = element_text(size = 10, vjust=1, hjust= 0.5),
         axis.text.y = element_text(size = 9, angle = 90, vjust=1, hjust= 0.5),
         plot.margin = margin(rep(30, 30)))+
-  geom_smooth(method = "lm", color = "#EDFF21")
+  geom_smooth(method = "lm", color = "#EDFF21") 
 
 
 
 # Построим кумулятивный график
 
 
-ggplot(AI_news, aes(x = date, y = cumulative_count)) +
-  geom_line(color = "#755D9A", linewidth = 1.5) +
+ggplot(AI_news, aes(x = date)) +
+  geom_area(aes(y=cumulative_count, fill="cumulative_count")) + 
   labs(title = "Cumulative Count of Articles Over Time",
        x = "Years",
        y = "Articles") +
-  theme_classic() +
+  scale_y_continuous(limits = c(0, 1500),breaks = c(300, 600, 900, 1200)) +
+  guides(size="none", colour = FALSE, fill = FALSE) +
+  theme_bw() +
   theme(plot.title = element_text(size = 15, face = "bold", vjust = 5),
         axis.title.x = element_text(size = 10, vjust= -2), 
         axis.title.y = element_text(size = 10, vjust= 4), 
         axis.text.x = element_text(size = 10, vjust=1, hjust= 0.5),
         axis.text.y = element_text(size = 8, angle = 90, vjust=1, hjust= 0.5),
-        plot.margin = margin(rep(30, 30)))
+        plot.margin = margin(rep(30, 30))) +
+  scale_fill_brewer()
 
 
